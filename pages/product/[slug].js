@@ -82,8 +82,6 @@ const ProductScreen = props => {
   );
 };
 
-export default ProductScreen;
-
 export async function getServerSideProps(context) {
   const { params } = context;
   const { slug } = params;
@@ -97,3 +95,4 @@ export async function getServerSideProps(context) {
     },
   };
 }
+export default ProductScreen;

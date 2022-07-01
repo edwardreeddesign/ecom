@@ -7,8 +7,8 @@ async function connect() {
     console.log('already connected');
     return;
   }
-  if (mongoose.connection.length > 0) {
-    connection.isConnected = mongoose.connection[0].readyState;
+  if (mongoose.connections.length > 0) {
+    connection.isConnected = mongoose.connections[0].readyState;
     if (connection.isConnected === 1) {
       console.log('use previous connection');
       return;
@@ -30,8 +30,6 @@ async function disconnect() {
     }
   }
 }
-
-// Converting mongodb to objects
 function convertDocToObj(doc) {
   doc._id = doc._id.toString();
   doc.createdAt = doc.createdAt.toString();

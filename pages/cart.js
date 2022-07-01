@@ -10,40 +10,37 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const CartScreen = () => {
-  const { state, dispatch } = useContext(Store);
   const router = useRouter();
+  const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
   } = state;
-
   const removeItemHandler = item => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
-
   const updateCartHandler = async (item, qty) => {
     const quantity = Number(qty);
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
-      return toast.error('Sorry, Product is out of Stock.');
+      return toast.error('Sorry. Product is out of stock');
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
-    toast.success('Product updated to the cart');
+    toast.success('Product updated in the cart');
   };
-
   return (
     <Layout title="Shopping Cart">
       <h1 className="mb-4 text-xl">Shopping Cart</h1>
       {cartItems.length === 0 ? (
         <div>
-          Cart is empty. <Link href="/">Go Shopping</Link>
+          Cart is empty. <Link href="/">Go shopping</Link>
         </div>
       ) : (
         <div className="grid md:grid-cols-4 md:gap-5">
           <div className="overflow-x-auto md:col-span-3">
-            <table className="min-w-full">
+            <table className="min-w-full ">
               <thead className="border-b">
                 <tr>
-                  <th className="px-5 text-left">Item</th>
+                  <th className="p-5 text-left">Item</th>
                   <th className="p-5 text-right">Quantity</th>
                   <th className="p-5 text-right">Price</th>
                   <th className="p-5">Action</th>
@@ -51,7 +48,7 @@ const CartScreen = () => {
               </thead>
               <tbody>
                 {cartItems.map(item => (
-                  <tr className="border-b" key={item.slug}>
+                  <tr key={item.slug} className="border-b">
                     <td>
                       <Link href={`/product/${item.slug}`}>
                         <a className="flex items-center">
@@ -60,7 +57,7 @@ const CartScreen = () => {
                             alt={item.name}
                             width={50}
                             height={50}
-                          />
+                          ></Image>
                           &nbsp;
                           {item.name}
                         </a>
@@ -81,7 +78,7 @@ const CartScreen = () => {
                     <td className="p-5 text-right">${item.price}</td>
                     <td className="p-5 text-center">
                       <button onClick={() => removeItemHandler(item)}>
-                        <XCircleIcon className="h-5 w-5" />
+                        <XCircleIcon className="h-5 w-5"></XCircleIcon>
                       </button>
                     </td>
                   </tr>

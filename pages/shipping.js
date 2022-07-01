@@ -7,10 +7,6 @@ import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 
 const ShippingScreen = () => {
-  const router = useRouter();
-  const { state, dispatch } = useContext(Store);
-  const { cart } = state;
-  const { shippingAddress } = cart;
   const {
     handleSubmit,
     register,
@@ -18,12 +14,17 @@ const ShippingScreen = () => {
     setValue,
   } = useForm();
 
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+  const { shippingAddress } = cart;
+  const router = useRouter();
+
   useEffect(() => {
-    setValue('fullName, shippingAddress.fullName');
-    setValue('address, shippingAddress.address');
-    setValue('city, shippingAddress.city');
-    setValue('postalCode, shippingAddress.postalCode');
-    setValue('country, shippingAddress.country');
+    setValue('fullName', shippingAddress.fullName);
+    setValue('address', shippingAddress.address);
+    setValue('city', shippingAddress.city);
+    setValue('postalCode', shippingAddress.postalCode);
+    setValue('country', shippingAddress.country);
   }, [setValue, shippingAddress]);
 
   const submitHandler = ({ fullName, address, city, postalCode, country }) => {
@@ -63,7 +64,7 @@ const ShippingScreen = () => {
             id="fullName"
             autoFocus
             {...register('fullName', {
-              required: 'Please enter your full name',
+              required: 'Please enter full name',
             })}
           />
           {errors.fullName && (
@@ -76,11 +77,8 @@ const ShippingScreen = () => {
             className="w-full"
             id="address"
             {...register('address', {
-              required: 'Please enter your address',
-              minLength: {
-                value: 3,
-                message: 'Address must be more than 2 characters',
-              },
+              required: 'Please enter address',
+              minLength: { value: 3, message: 'Address is more than 2 chars' },
             })}
           />
           {errors.address && (
@@ -93,11 +91,11 @@ const ShippingScreen = () => {
             className="w-full"
             id="city"
             {...register('city', {
-              required: 'Please enter your city',
+              required: 'Please enter city',
             })}
           />
           {errors.city && (
-            <div className="text-red-500">{errors.city.message}</div>
+            <div className="text-red-500 ">{errors.city.message}</div>
           )}
         </div>
         <div className="mb-4">
@@ -106,11 +104,11 @@ const ShippingScreen = () => {
             className="w-full"
             id="postalCode"
             {...register('postalCode', {
-              required: 'Please enter your Postal Code',
+              required: 'Please enter postal code',
             })}
           />
           {errors.postalCode && (
-            <div className="text-red-500">{errors.postalCode.message}</div>
+            <div className="text-red-500 ">{errors.postalCode.message}</div>
           )}
         </div>
         <div className="mb-4">
@@ -119,11 +117,11 @@ const ShippingScreen = () => {
             className="w-full"
             id="country"
             {...register('country', {
-              required: 'Please enter your Country',
+              required: 'Please enter country',
             })}
           />
           {errors.country && (
-            <div className="text-red-500">{errors.country.message}</div>
+            <div className="text-red-500 ">{errors.country.message}</div>
           )}
         </div>
         <div className="mb-4 flex justify-between">
