@@ -6,6 +6,7 @@ import { getError } from '../utils/error';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 const LoginScreen = () => {
   const { data: session } = useSession();
@@ -21,11 +22,18 @@ const LoginScreen = () => {
   const {
     handleSubmit,
     register,
+    getValues,
     formState: { errors },
   } = useForm();
 
-  const submitHandler = async ({ email, password }) => {
+  const submitHandler = async ({ name, email, password }) => {
     try {
+      await axios.post('/api/auth/signup', {
+        name,
+        email,
+        password,
+      });
+
       const result = await signIn('credentials', {
         redirect: false,
         email,
@@ -40,12 +48,25 @@ const LoginScreen = () => {
   };
 
   return (
-    <Layout title="Login">
+    <Layout title="Create Account">
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="mx-auto max-w-screen-md"
       >
-        <h1 className="mb-r text-xl">Login</h1>
+        <h1 className="mb-r text-xl">Create Account</h1>
+        <div className="mb-4">
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            className="w-full"
+            id="name"
+            autoFocus
+            {...register('name', { required: 'Please enter your name' })}
+          />
+          {errors.name && (
+            <div className="text-red-500">{errors.name.message}</div>
+          )}
+        </div>
         <div className="mb-4">
           <label htmlFor="email">Email</label>
           <input
@@ -59,7 +80,6 @@ const LoginScreen = () => {
             })}
             className="w-full"
             id="email"
-            autoFocus
           />
           {errors.email && (
             <div className="text-red-500">{errors.email.message}</div>
@@ -82,7 +102,29 @@ const LoginScreen = () => {
           )}
         </div>
         <div className="mb-4">
-          <button className="primary-button">Login</button>
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            className="w-full"
+            type="password"
+            id="confirmPassword"
+            {...register('confirmPassword', {
+              validate: value => value === getValues('password'),
+              minLength: {
+                value: 6,
+                message: 'confirm password is more than 5 characters',
+              },
+            })}
+          />
+          {errors.confirmPassword && (
+            <div className="text-re-500">{errors.confirmPassword.message}</div>
+          )}
+          {errors.confirmPassword &&
+            errors.confirmPassword.type === 'validate' && (
+              <div className="text-red-500">Passwords do not match</div>
+            )}
+        </div>
+        <div className="mb-4">
+          <button className="primary-button">Register</button>
         </div>
         <div className="mb-4">
           Don&apos;t have an account? &nbsp;
