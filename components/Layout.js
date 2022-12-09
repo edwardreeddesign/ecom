@@ -11,10 +11,13 @@ import Cookies from 'js-cookie';
 
 const Layout = ({ title, children }) => {
   const { status, data: session } = useSession();
+  console.log(session);
 
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const [cartItemsCount, setCartItemsCount] = useState(0);
+
+  console.log(session);
 
   useEffect(() => {
     setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0));
@@ -38,7 +41,7 @@ const Layout = ({ title, children }) => {
         <header>
           <nav className="flex h-12 items-center px-4 justify-between shadow-md">
             <Link href="/">
-              <a className="text-lg font-bold">amazona</a>
+              <a className="text-lg font-bold">myStore</a>
             </Link>
             <div>
               <Link href="/cart">
@@ -56,7 +59,7 @@ const Layout = ({ title, children }) => {
               ) : session?.user ? (
                 <Menu as="div" className="relative inline-block">
                   <Menu.Button className="text-blue-600">
-                    {session.user.name}
+                    {session.user.firstName}
                   </Menu.Button>
                   <Menu.Items className="absolute right-0 w-56 origin-top-right shadow-lg bg-white">
                     <Menu.Item>

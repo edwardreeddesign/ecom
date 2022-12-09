@@ -26,12 +26,20 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm();
 
-  const submitHandler = async ({ name, email, password }) => {
+  const submitHandler = async ({
+    name,
+    email,
+    password,
+    firstName,
+    lastName,
+  }) => {
     try {
       await axios.post('/api/auth/signup', {
         name,
         email,
         password,
+        firstName,
+        lastName,
       });
 
       const result = await signIn('credentials', {
@@ -62,6 +70,32 @@ const LoginScreen = () => {
             id="name"
             autoFocus
             {...register('name', { required: 'Please enter your name' })}
+          />
+          {errors.name && (
+            <div className="text-red-500">{errors.name.message}</div>
+          )}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="firstName">First Name</label>
+          <input
+            type="text"
+            className="w-full"
+            id="firstName"
+            autoFocus
+            {...register('firstName', { required: 'Please enter your name' })}
+          />
+          {errors.name && (
+            <div className="text-red-500">{errors.name.message}</div>
+          )}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            type="text"
+            className="w-full"
+            id="lastName"
+            autoFocus
+            {...register('lastName', { required: 'Please enter your name' })}
           />
           {errors.name && (
             <div className="text-red-500">{errors.name.message}</div>
@@ -123,10 +157,10 @@ const LoginScreen = () => {
               <div className="text-red-500">Passwords do not match</div>
             )}
         </div>
-        <div className="mb-4">
-          <button className="primary-button">Register</button>
+        <div>
+          <button>Register</button>
         </div>
-        <div className="mb-4">
+        <div>
           Don&apos;t have an account? &nbsp;
           <Link href={`/register?redirect=${redirect || '/'}`}>Register</Link>
         </div>
